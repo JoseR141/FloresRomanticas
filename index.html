@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEAMO PLECIOSA</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+        }
+
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: yellow;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: twinkle 3s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .moving-light {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            filter: blur(20px);
+            transform: translate(-50%, -50%);
+            animation: moveLight 5s ease-in-out forwards; /* La animación se queda en el último estado */
+        }
+
+        .move {
+            animation: moveLight 5s ease-in-out;
+        }
+
+        @keyframes moveLight {
+            0% { 
+                top: 10%; left: 10%; 
+                background: radial-gradient(circle, rgba(255,255,0,0.8) 0%, rgba(0,0,0,0) 80%);
+            }
+            25% { top: 80%; left: 20%; }
+            50% { 
+                top: 50%; left: 70%; 
+                background: radial-gradient(circle, rgba(255,255,0,0.8) 0%, rgba(0,0,0,0) 80%); /* Amarillo más tenue */
+            }
+            75% { top: 20%; left: 50%; }
+            100% { 
+                top: 50%; left: 50%; 
+                background: radial-gradient(circle, rgba(255,0,0,0.8) 0%, rgba(0,0,0,0) 80%);
+            }
+        }
+
+        
+
+        .fade-out {
+            animation: fadeOut 2s forwards;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        .hidden-content {
+            opacity: 0;
+            transition: opacity 2s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hidden-content.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+
+
+<body>
+    <div class="overlay">
+        <div class="stars"></div>
+        <div class="moving-light"></div>
+    </div>
+    
+    <div class="hidden-content">
+        <div class="dedicatoria">
+            <p>De: Joaquin</p>
+            <p>Para: Jane 💗</p>
+        </div>
+
+        <div class="greetings">
+            <span>M</span>
+            <span>I</span>
+        </div>
+
+        <div class="greetings">
+            <span>A</span>
+            <span>M</span>
+            <span>O</span>
+            <span>L</span>
+        </div>
+
+        <div class="description">
+            <span>La mejor noviecita del mundooo!!</span>
+        </div>
+
+        <div class="button">
+            <a href="FLORES.html" class="btn">Clicsito</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const starContainer = document.querySelector(".stars");
+            for (let i = 0; i < 50; i++) {
+                let star = document.createElement("div");
+                star.classList.add("star");
+                star.style.top = Math.random() * 100 + "%";
+                star.style.left = Math.random() * 100 + "%";
+                star.style.animationDuration = (Math.random() * 2 + 1) + "s";
+                starContainer.appendChild(star);
+            }
+            
+            setTimeout(() => {
+                document.querySelector(".moving-light").classList.add("move");
+            }, 500);
+
+            setTimeout(() => {
+                document.querySelector(".overlay").classList.add("fade-out");
+                document.querySelector(".hidden-content").classList.add("show");
+            }, 5000);
+        });
+    </script>
+    
+     <!-- Audio oculto -->
+     <audio id="bg-music" src="img/SanLucas.mp3" loop></audio>
+
+     <script>
+         document.addEventListener("DOMContentLoaded", function () {
+             let audio = document.getElementById("bg-music");
+ 
+             // Comprobar si la música ya está sonando
+             if (!sessionStorage.getItem("musicPlaying")) {
+                 audio.play().then(() => {
+                     sessionStorage.setItem("musicPlaying", "true");
+                 }).catch(error => console.log("Reproducción automática bloqueada:", error));
+             }
+ 
+             // Mantener la música al cambiar de página
+             window.addEventListener("beforeunload", function () {
+                 sessionStorage.setItem("musicTime", audio.currentTime);
+             });
+ 
+             let savedTime = sessionStorage.getItem("musicTime");
+             if (savedTime) {
+                 audio.currentTime = parseFloat(savedTime);
+             }
+ 
+             audio.volume = 0.5; // Ajusta el volumen si es necesario
+         });
+     </script>
+</body>
+</html>
